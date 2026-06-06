@@ -407,19 +407,29 @@ class ReportGenerator:
             story.append(t)
             story.append(Spacer(1, 0.8*cm))
             
-            if 'trend' in chart_paths:
-                story.append(Paragraph('二、趋势分析图表', styles['Heading2']))
-                story.append(Spacer(1, 0.3*cm))
-                img = Image(chart_paths['trend'], width=16*cm, height=9*cm)
-                story.append(img)
-                story.append(Spacer(1, 0.5*cm))
+            if 'trend' in chart_paths and os.path.exists(chart_paths['trend']):
+                try:
+                    story.append(Paragraph('二、趋势分析图表', styles['Heading2']))
+                    story.append(Spacer(1, 0.3*cm))
+                    img = Image(chart_paths['trend'], width=16*cm, height=9*cm)
+                    story.append(img)
+                    story.append(Spacer(1, 0.5*cm))
+                except Exception as e:
+                    logger.warning(f"Failed to insert trend chart: {str(e)}")
+                    story.append(Paragraph('(趋势图生成失败，已跳过)', styles['Normal']))
+                    story.append(Spacer(1, 0.5*cm))
             
-            if 'pie' in chart_paths:
-                story.append(Paragraph('三、设备与维修分布', styles['Heading2']))
-                story.append(Spacer(1, 0.3*cm))
-                img = Image(chart_paths['pie'], width=16*cm, height=7*cm)
-                story.append(img)
-                story.append(Spacer(1, 0.5*cm))
+            if 'pie' in chart_paths and os.path.exists(chart_paths['pie']):
+                try:
+                    story.append(Paragraph('三、设备与维修分布', styles['Heading2']))
+                    story.append(Spacer(1, 0.3*cm))
+                    img = Image(chart_paths['pie'], width=16*cm, height=7*cm)
+                    story.append(img)
+                    story.append(Spacer(1, 0.5*cm))
+                except Exception as e:
+                    logger.warning(f"Failed to insert pie chart: {str(e)}")
+                    story.append(Paragraph('(分布图生成失败，已跳过)', styles['Normal']))
+                    story.append(Spacer(1, 0.5*cm))
             
             story.append(Paragraph('四、设备类型统计', styles['Heading2']))
             story.append(Spacer(1, 0.3*cm))

@@ -368,6 +368,7 @@ def show_menu():
     print("4. 查询设备信息")
     print("5. 启动定时任务调度器")
     print("6. 查看设备统计信息")
+    print("7. 批量导出查询结果")
     print("0. 退出系统")
     print("-" * 60)
 
@@ -379,7 +380,7 @@ def main():
     
     while True:
         show_menu()
-        choice = input("请选择操作 (0-6): ").strip()
+        choice = input("请选择操作 (0-7): ").strip()
         
         if choice == '0':
             print("感谢使用，再见！")
@@ -444,6 +445,35 @@ def main():
             print("\n折旧统计:")
             print(f"  月折旧额: {dep_stats['monthly_depreciation']:.2f}元")
             print(f"  累计折旧: {dep_stats['total_depreciated']:.2f}元")
+        
+        elif choice == '7':
+            print("\n=== 批量导出查询结果 ===")
+            print("请设置筛选条件（直接回车表示不限制）:")
+            keyword = input("  关键词(资产编号/序列号): ").strip() or None
+            status = input("  设备状态(in_use/in_stock/under_repair/scrapped): ").strip() or None
+            equipment_type = input("  设备类型(laptop/monitor/phone等): ").strip() or None
+            employee_id = input("  员工工号: ").strip() or None
+            start_date = input("  开始日期(YYYY-MM-DD): ").strip() or None
+            end_date = input("  结束日期(YYYY-MM-DD): ").strip() or None
+            
+            print("\n正在导出...")
+            from query import EquipmentQuery
+            result = EquipmentQuery.export_query_results(
+                employee_id=employee_id,
+                equipment_type=equipment_type,
+                status=status,
+                start_date=start_date,
+                end_date=end_date,
+                keyword=keyword,
+                operator_id='system'
+            )
+            
+            if result['success']:
+                print(f"\n✅ 导出成功！")
+                print(f"  记录数: {result['record_count']}")
+                print(f"  保存路径: {result['output_path']}")
+            else:
+                print("\n❌ 导出失败！")
         
         else:
             print("无效的选择，请重新输入！")

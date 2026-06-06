@@ -34,6 +34,15 @@ PREFERRED_SUPPLIERS = [
     {'id': 'S005', 'name': '惠普商用', 'rating': 4.5, 'categories': ['laptop', 'monitor', 'printer']},
 ]
 
-WECHAT_WEBHOOK_URL = ''
+# 企业微信群机器人Webhook地址配置
+# 配置说明：
+# 1. 打开企业微信，进入需要接收预警的群聊
+# 2. 点击群设置 -> 群机器人 -> 添加机器人
+# 3. 选择"自定义"机器人，输入机器人名称（如"设备管理预警"）
+# 4. 创建成功后会生成Webhook地址，格式如下：
+#    https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+# 5. 将完整的Webhook地址粘贴到下方即可
+# 注意：此配置仅用于异常预警通知，如不需要可留空
+WECHAT_WEBHOOK_URL = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your-webhook-key-here'
 
 SCHEDULED_TASK_TIME = '02:00'
